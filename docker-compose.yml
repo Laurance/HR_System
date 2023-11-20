@@ -1,0 +1,31 @@
+version: "3"
+services:
+  hr_system_django:
+    container_name: hr_system_django
+    hostname: hr-system-django
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hr_system_django
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    environment:
+      STORAGE_PATH_BASE: /tmp
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    restart: always
+    env_file:
+      - .env.dev
+    tty: true
+    stdin_open: true
+  hr_system_db:
+    container_name: hr_system_db
+    hostname: hr-system-db
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env.dev
+    tty: true
+    stdin_open: true
